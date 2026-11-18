@@ -1,0 +1,15 @@
+{
+  "name": "英语补底 · 初一",
+  "short_name": "英语补底",
+  "description": "译林版七上单词、语法、音标和练习",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3F7FD",
+  "theme_color": "#0A6CFF",
+  "icons": [
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable"}
+  ]
+}

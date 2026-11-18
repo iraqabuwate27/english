@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>英语补底</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 <style>
 :root{
  color-scheme:light;
@@ -224,6 +227,7 @@ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" s
 info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3"/><path d="M12 11.2v5"/><circle cx="12" cy="8.2" r=".95" fill="currentColor" stroke="none"/></svg>',
 chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>',
 back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="11.5" height="15" rx="2.2"/><path d="M8.5 3h9a2.5 2.5 0 0 1 2.5 2.5V15"/></svg>',
 shuffle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3.5l9 10H20"/><path d="M4 17h3.5l9-10H20"/><path d="M17.5 4.5 20 7l-2.5 2.5"/><path d="M17.5 14.5 20 17l-2.5 2.5"/></svg>'
 };
 function ic(n){return '<span class="ico">'+(IC[n]||'')+'</span>'}
@@ -402,6 +406,39 @@ qs:[['I get up ___ six o\u2019clock.','in|on|at',2,'具体时刻用 at。'],
 ['「beautiful」是什么词性？','形容词|副词|动词',0,'修饰名词，是形容词。'],
 ['「because」是什么词性？','介词|连词|副词',1,'连接句子，是连词。']]}
 ];
+var UNITS=[
+{id:'u1',n:'Unit 1 This is me!',tip:'自我介绍：名字、班级、年龄、外貌、性格',
+words:[['greet','问候','/ɡriːt/'],['introduce','介绍','/ˌɪntrəˈdjuːs/'],['each other','互相','/ˌiːtʃ ˈʌðə/'],['go by','叫作；被称为','/ɡəʊ baɪ/'],['glad','高兴的','/ɡlæd/'],['same','相同的','/seɪm/'],['hobby','爱好','/ˈhɒbi/'],['grade','年级','/ɡreɪd/'],['classmate','同班同学','/ˈklɑːsmeɪt/'],['friendly','友好的','/ˈfrendli/'],['full','满的；充满的','/fʊl/'],['energy','能量；精力','/ˈenədʒi/'],['slim','苗条的','/slɪm/'],['polite','有礼貌的','/pəˈlaɪt/'],['smart','聪明的','/smɑːt/'],['ready','准备好的','/ˈredi/'],['other','其他的','/ˈʌðə/'],['interested','感兴趣的','/ˈɪntrəstɪd/'],['looks','相貌','/lʊks/'],['character','性格','/ˈkærəktə/'],['both','两个都','/bəʊθ/'],['enjoy','享受；喜爱','/ɪnˈdʒɔɪ/'],['pretty','漂亮的','/ˈprɪti/'],['shy','害羞的','/ʃaɪ/'],['only','仅仅','/ˈəʊnli/'],['stay','停留','/steɪ/'],['match','相配；比赛','/mætʃ/'],['luck','运气','/lʌk/'],['chess','国际象棋','/tʃes/'],['problem','问题','/ˈprɒbləm/'],['weekend','周末','/ˌwiːkˈend/'],['fun','乐趣','/fʌn/']],
+sent:[['Please greet and introduce each other.','请互相问候并介绍。'],['What\u2019s your name? — My name is Chen Dan.','你叫什么名字？——我叫陈丹。'],['I go by Millie.','你们可以叫我米莉。'],['Which class are you in? — I\u2019m in Class 1, Grade 7.','你在哪个班？——我在七年级一班。'],['Glad to meet you too!','我也很高兴认识你！'],['We\u2019re in the same class!','我们在同一个班！'],['Do you have any hobbies?','你有什么爱好吗？'],['She has long hair.','她留着长发。'],['He is always full of energy.','他总是精力充沛。'],['He wears glasses.','他戴眼镜。']]},
+
+{id:'u2',n:'Unit 2 Hobbies',tip:'谈爱好：喜欢什么、擅长什么、想加入什么社团',
+words:[['jog','慢跑','/dʒɒɡ/'],['paint','用颜料画；油漆','/peɪnt/'],['paper-cutting','剪纸','/ˈpeɪpə ˌkʌtɪŋ/'],['fit','健康的；合适的','/fɪt/'],['around','围绕；到处','/əˈraʊnd/'],['change','改变','/tʃeɪndʒ/'],['life','生活；生命','/laɪf/'],['museum','博物馆','/mjuˈziːəm/'],['thing','东西','/θɪŋ/'],['apart','分开','/əˈpɑːt/'],['fix','修理','/fɪks/'],['endless','无穷无尽的','/ˈendləs/'],['scientist','科学家','/ˈsaɪəntɪst/'],['dream','梦想','/driːm/'],['true','真正的','/truː/'],['club','社团；俱乐部','/klʌb/'],['member','成员','/ˈmembə/'],['geography','地理','/dʒiˈɒɡrəfi/'],['volleyball','排球','/ˈvɒlibɔːl/'],['each','每个','/iːtʃ/'],['once','一次','/wʌns/'],['join','加入','/dʒɔɪn/'],['meeting','会议；会面','/ˈmiːtɪŋ/'],['sound','听起来','/saʊnd/'],['plan','计划','/plæn/'],['questionnaire','问卷','/ˌkwestʃəˈneə/'],['role','角色','/rəʊl/'],['model','模范；模特','/ˈmɒdl/'],['design','设计','/dɪˈzaɪn/'],['skill','技能','/skɪl/']],
+sent:[['What\u2019s your hobby?','你的爱好是什么？'],['I enjoy painting.','我喜欢画画。'],['My hobby is playing volleyball.','我的爱好是打排球。'],['I\u2019m good at paper-cutting.','我擅长剪纸。'],['Would you like to join our club?','你想加入我们的社团吗？'],['It sounds interesting.','听起来很有趣。'],['I plan to learn a new skill.','我打算学一项新技能。']]},
+
+{id:'u3',n:'Unit 3 Welcome to our school!',tip:'介绍学校：有什么楼、在哪里、怎么走',
+words:[['welcome','欢迎','/ˈwelkəm/'],['office','办公室','/ˈɒfɪs/'],['playground','操场','/ˈpleɪɡraʊnd/'],['hall','大厅；礼堂','/hɔːl/'],['gate','大门','/ɡeɪt/'],['bright','明亮的','/braɪt/'],['modern','现代的','/ˈmɒdn/'],['clean','干净的；打扫','/kliːn/'],['building','楼房','/ˈbɪldɪŋ/'],['really','真正地；很','/ˈrɪəli/'],['nice','好的；漂亮的','/naɪs/'],['floor','楼层；地板','/flɔː/'],['art','美术；艺术','/ɑːt/'],['music','音乐','/ˈmjuːzɪk/'],['lab','实验室','/læb/'],['dining hall','食堂','/ˈdaɪnɪŋ hɔːl/'],['show','展示','/ʃəʊ/'],['behind','在……后面','/bɪˈhaɪnd/'],['between','在……之间','/bɪˈtwiːn/'],['next to','紧挨着','/ˈnekst tə/'],['many','许多','/ˈmeni/'],['tree','树','/triː/'],['flower','花','/ˈflaʊə/'],['teacher','老师','/ˈtiːtʃə/'],['student','学生','/ˈstjuːdnt/'],['class','班级','/klɑːs/'],['welcome to','欢迎来到','/ˈwelkəm tə/'],['quiet','安静的','/ˈkwaɪət/']],
+sent:[['Welcome to our school!','欢迎来到我们学校！'],['Let me show you around.','让我带你参观一下。'],['Our school is big and modern.','我们学校又大又现代。'],['The library is next to the playground.','图书馆在操场旁边。'],['There are many trees and flowers in the school.','学校里有很多树和花。'],['Where is the dining hall? — It\u2019s behind the hall.','食堂在哪里？——在大礼堂后面。']]},
+
+{id:'u4',n:'Unit 4 School days',tip:'一天的安排：几点做什么、课程表、频度副词',
+words:[['get up','起床','/ˌɡet ˈʌp/'],['activity','活动','/ækˈtɪvəti/'],['housework','家务','/ˈhaʊswɜːk/'],['weekday','工作日','/ˈwiːkdeɪ/'],['usually','通常','/ˈjuːʒuəli/'],['myself','我自己','/maɪˈself/'],['enjoy oneself','玩得开心','/ɪnˈdʒɔɪ wʌnˈself/'],['first','第一','/fɜːst/'],['lesson','课','/ˈlesn/'],['breakfast','早饭','/ˈbrekfəst/'],['morning','早上','/ˈmɔːnɪŋ/'],['exercise','锻炼；练习','/ˈeksəsaɪz/'],['homework','作业','/ˈhəʊmwɜːk/'],['dinner','晚饭','/ˈdɪnə/'],['bed','床','/bed/'],['sleep','睡觉','/sliːp/'],['start','开始','/stɑːt/'],['finish','结束','/ˈfɪnɪʃ/'],['o\u2019clock','点钟','/əˈklɒk/'],['half','一半','/hɑːf/'],['past','过；经过','/pɑːst/'],['quarter','四分之一','/ˈkwɔːtə/'],['after','在……之后','/ˈɑːftə/'],['before','在……之前','/bɪˈfɔː/'],['busy','忙的','/ˈbɪzi/'],['free','空闲的','/friː/'],['timetable','课程表','/ˈtaɪmteɪbl/'],['subject','学科','/ˈsʌbdʒɪkt/']],
+sent:[['I get up at six every day.','我每天六点起床。'],['I have four lessons in the morning.','我上午有四节课。'],['What time do you go to bed?','你几点睡觉？'],['We do morning exercises at eight.','我们八点做早操。'],['I usually do my homework after dinner.','我通常晚饭后做作业。'],['My timetable is full on weekdays.','我工作日课程表排得很满。']]},
+
+{id:'u5',n:'Unit 5 A healthy lifestyle',tip:'健康生活：吃什么、多少量、为什么健康',
+words:[['lifestyle','生活方式','/ˈlaɪfstaɪl/'],['cucumber','黄瓜','/ˈkjuːkʌmbə/'],['lemon','柠檬','/ˈlemən/'],['watermelon','西瓜','/ˈwɔːtəmelən/'],['pepper','甜椒；胡椒粉','/ˈpepə/'],['chocolate','巧克力','/ˈtʃɒklət/'],['beef','牛肉','/biːf/'],['carrot','胡萝卜','/ˈkærət/'],['pork','猪肉','/pɔːk/'],['sweet','糖果；甜的','/swiːt/'],['snack','点心；小吃','/snæk/'],['health','健康','/helθ/'],['delicious','美味的','/dɪˈlɪʃəs/'],['important','重要的','/ɪmˈpɔːtnt/'],['diet','日常饮食','/ˈdaɪət/'],['without','没有','/wɪˈðaʊt/'],['pancake','烙饼','/ˈpænkeɪk/'],['tofu','豆腐','/ˈtəʊfuː/'],['sugar','糖','/ˈʃʊɡə/'],['tooth','牙齿','/tuːθ/'],['unhealthy','不健康的','/ʌnˈhelθi/'],['need','需要','/niːd/'],['enough','足够的','/ɪˈnʌf/'],['less','更少的','/les/'],['cheese','奶酪','/tʃiːz/'],['piece','一块；一片','/piːs/'],['bowl','碗','/bəʊl/'],['salt','盐','/sɔːlt/'],['kilo','千克','/ˈkiːləʊ/'],['bottle','瓶子','/ˈbɒtl/'],['maybe','也许','/ˈmeɪbi/'],['almost','几乎','/ˈɔːlməʊst/'],['chips','炸薯条','/tʃɪps/']],
+sent:[['I have a healthy lifestyle.','我有健康的生活方式。'],['I eat lots of vegetables and fruit.','我吃很多蔬菜和水果。'],['You should drink enough water.','你应该喝足够的水。'],['Too much sugar is bad for your teeth.','太多糖对你的牙齿不好。'],['He seldom eats snacks.','他很少吃零食。'],['A healthy diet is important.','健康的饮食很重要。']]},
+
+{id:'u6',n:'Unit 6 My clothes, my style',tip:'衣服和风格：穿什么、合不合身、怎么搭配',
+words:[['style','风格','/staɪl/'],['jeans','牛仔裤','/dʒiːnz/'],['tie','领带','/taɪ/'],['calm','平静的','/kɑːm/'],['mix','混合','/mɪks/'],['suitable','合适的','/ˈsuːtəbl/'],['comfortable','舒适的','/ˈkʌmftəbl/'],['primary','初级的；小学的','/ˈpraɪməri/'],['blouse','女式衬衫','/blaʊz/'],['sweater','毛衣','/ˈswetə/'],['scarf','围巾','/skɑːf/'],['glove','手套','/ɡlʌv/'],['dress','连衣裙','/dres/'],['jacket','夹克','/ˈdʒækɪt/'],['trainer','运动鞋','/ˈtreɪnə/'],['match','搭配；比赛','/mætʃ/'],['fit','合身','/fɪt/'],['size','尺寸','/saɪz/'],['colour','颜色','/ˈkʌlə/'],['wear','穿；戴','/weə/'],['try on','试穿','/ˌtraɪ ˈɒn/'],['choose','选择','/tʃuːz/'],['dark','深色的；暗的','/dɑːk/'],['light','浅色的；轻的','/laɪt/'],['cotton','棉','/ˈkɒtn/'],['silk','丝绸','/sɪlk/'],['smart','精神的；聪明的','/smɑːt/'],['fashion','时尚','/ˈfæʃn/']],
+sent:[['My favourite clothes are jeans and a T-shirt.','我最喜欢的衣服是牛仔裤和T恤。'],['This sweater is comfortable.','这件毛衣很舒服。'],['It fits me well.','它很合我的身。'],['Can I try it on?','我可以试穿一下吗？'],['The blue one matches your trousers.','蓝色的那件和你的裤子很搭。'],['She is in style.','她穿得很时尚。']]},
+
+{id:'u7',n:'Unit 7 Be wise with money',tip:'钱：花多少、贵不贵、怎么存、怎么省',
+words:[['wise','明智的','/waɪz/'],['money','钱','/ˈmʌni/'],['yuan','元','/juˈɑːn/'],['manage','管理；设法完成','/ˈmænɪdʒ/'],['save','储蓄；节省','/seɪv/'],['spend','花费','/spend/'],['cost','花费','/kɒst/'],['pay','支付','/peɪ/'],['price','价格','/praɪs/'],['cheap','便宜的','/tʃiːp/'],['expensive','昂贵的','/ɪkˈspensɪv/'],['pocket money','零花钱','/ˈpɒkɪt ˌmʌni/'],['plan','计划','/plæn/'],['budget','预算','/ˈbʌdʒɪt/'],['shop','商店；购物','/ʃɒp/'],['buy','买','/baɪ/'],['sell','卖','/sel/'],['change','零钱；改变','/tʃeɪndʒ/'],['bank','银行','/bæŋk/'],['card','卡','/kɑːd/'],['receipt','收据','/rɪˈsiːt/'],['waste','浪费','/weɪst/'],['afford','买得起','/əˈfɔːd/'],['worth','值得','/wɜːθ/'],['another','另一个','/əˈnʌðə/'],['enough','足够的','/ɪˈnʌf/'],['list','清单','/lɪst/']],
+sent:[['I save my pocket money.','我把零花钱存起来。'],['How much does it cost?','这个多少钱？'],['It\u2019s too expensive for me.','对我来说太贵了。'],['Let\u2019s make a shopping list.','我们列个购物清单吧。'],['Be wise with your money.','要明智地花钱。'],['I spend 20 yuan on books every month.','我每月花20元买书。']]},
+
+{id:'u8',n:'Unit 8 Let\u2019s celebrate!',tip:'节日：庆祝什么、怎么庆祝、送什么',
+words:[['celebrate','庆祝','/ˈselɪbreɪt/'],['Christmas','圣诞节','/ˈkrɪsməs/'],['remember','记得；纪念','/rɪˈmembə/'],['poet','诗人','/ˈpəʊɪt/'],['dragon boat','龙舟','/ˈdræɡən bəʊt/'],['festival','节日','/ˈfestɪvl/'],['dumpling','饺子','/ˈdʌmplɪŋ/'],['mooncake','月饼','/ˈmuːnkeɪk/'],['lantern','灯笼','/ˈlæntən/'],['firework','烟花','/ˈfaɪəwɜːk/'],['gift','礼物','/ɡɪft/'],['tradition','传统','/trəˈdɪʃn/'],['traditional','传统的','/trəˈdɪʃənl/'],['relative','亲戚','/ˈrelətɪv/'],['reunion','团聚','/ˌriːˈjuːniən/'],['greeting','问候','/ˈɡriːtɪŋ/'],['lucky','幸运的','/ˈlʌki/'],['wish','祝愿','/wɪʃ/'],['decorate','装饰','/ˈdekəreɪt/'],['holiday','假日','/ˈhɒlədeɪ/'],['eve','前夕','/iːv/'],['parade','游行','/pəˈreɪd/'],['custom','习俗','/ˈkʌstəm/'],['special','特别的','/ˈspeʃl/'],['mid-autumn','中秋','/ˌmɪd ˈɔːtəm/']],
+sent:[['Let\u2019s celebrate the Spring Festival!','我们来庆祝春节吧！'],['We eat dumplings and watch fireworks.','我们吃饺子、看烟花。'],['People give each other gifts at Christmas.','人们在圣诞节互赠礼物。'],['It\u2019s a traditional festival in China.','这是中国的传统节日。'],['We have a big dinner with our family.','我们和家人吃一顿丰盛的晚饭。'],['Happy New Year!','新年快乐！']]}
+];
 
 /* ---------- 音标 ---------- */
 var PH=[
@@ -426,7 +463,30 @@ if(S.today.date!==dstr())S.today={date:dstr(),words:0,gram:0,prac:0};
 var app=document.getElementById('app'),nav=document.getElementById('nav'),STATE={v:'home',a:null},WS=null,QZ=null;
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function speak(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.82;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+var VOICE=null;
+function pickVoice(){
+ try{
+  var vs=speechSynthesis.getVoices()||[],best=null,gb=null,any=null;
+  for(var i=0;i<vs.length;i++){
+   var v=vs[i];
+   if(/^en/i.test(v.lang)){if(!any)any=v}
+   if(/^en-GB/i.test(v.lang)){
+    if(!gb)gb=v;
+    if(/Google UK|Daniel|Serena|Kate|Arthur|British/i.test(v.name)){best=v;break}
+   }
+  }
+  VOICE=best||gb||any||null;
+ }catch(e){}
+}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+function speak(t,slow){
+ try{
+  var u=new SpeechSynthesisUtterance(t);
+  u.lang='en-GB';u.rate=slow?0.6:0.82;u.pitch=1;
+  if(VOICE)u.voice=VOICE;
+  speechSynthesis.cancel();speechSynthesis.speak(u);
+ }catch(e){}
+}
 function allWords(){var o=[];WG.forEach(function(g){g.l.forEach(function(w){o.push({en:w[0],zh:w[1],ipa:w[2]})})});return o}
 function allCount(){return allWords().length}
 function learnedCount(){var n=0;for(var k in S.seen){if(S.seen[k]>0)n++}return n}
@@ -441,6 +501,8 @@ function render(){
  if(STATE.v==='home')h=homeHTML();
  else if(STATE.v==='words')h=wordsHTML();
  else if(STATE.v==='wordrun')h=wordRunHTML();
+ else if(STATE.v==='book')h=bookHTML();
+ else if(STATE.v==='unit')h=unitHTML();
  else if(STATE.v==='grammar')h=grammarHTML();
  else if(STATE.v==='lesson')h=lessonHTML();
  else if(STATE.v==='phon')h=phonHTML();
@@ -449,7 +511,7 @@ function render(){
  else if(STATE.v==='wrong')h=wrongHTML();
  else h=homeHTML();
  app.innerHTML=h;
- var tabs=[['home','home','首页'],['words','book','单词'],['grammar','text','语法'],['phon','wave','音标'],['practice','pen','练习'],['wrong','undo','错题']];
+ var tabs=[['home','home','首页'],['words','cards','单词'],['book','book','课本'],['grammar','text','语法'],['phon','wave','音标'],['practice','pen','练习'],['wrong','undo','错题']];
  nav.innerHTML=tabs.map(function(t){
   var on=(t[0]===STATE.v||(t[0]==='words'&&STATE.v==='wordrun')||(t[0]==='grammar'&&STATE.v==='lesson')||(t[0]==='practice'&&STATE.v==='quiz'))?' on':'';
   return '<button class="'+on.trim()+'" onclick="view(\''+t[0]+'\')">'+IC[t[1]]+'<span>'+t[2]+'</span></button>'
@@ -470,7 +532,8 @@ function homeHTML(){
  h+='<div class="card stats">'+stat(learned,'背过的词')+stat(S.lessons.length+'/'+LESSONS.length,'学过的语法')+stat(bad,'待巩固')+'</div>';
  if(!CANSTORE)h+='<div class="card warn">'+ic('info')+'<span>这个浏览器不保存进度，建议用 Chrome 打开。</span></div>';
  h+='<div class="card tip">'+ic('info')+'<span>别急着刷题。先把三到六年级的单词补回来：每天 10 个，20 天就有 200 个。词认识了，句子才看得懂。</span></div>';
- h+=rowBtn('words','book','背单词',allCount()+' 个词 · 8 组 · 每个词带音标');
+ h+=rowBtn('words','cards','背单词',allCount()+' 个词 · 8 组 · 每个词带音标');
+ h+=rowBtn('book','book','看课本','译林版七上 · 8 个单元 · 单词+句型');
  h+=rowBtn('grammar','text','学语法','10 课 · 从 this is 讲起');
  h+=rowBtn('phon','wave','学音标','48 个音标 · 看词能读');
  h+=rowBtn('practice','pen','做练习','选择 · 拼写 · 连词成句 · 翻译');
@@ -540,6 +603,53 @@ function wordDoneHTML(){
  +'<button class="btn pri" onclick="startWords('+(WS?WS.gi:-1)+')">再来 10 个</button>'
  +'<button class="btn ghost" onclick="view(\'words\')">回到单词列表</button>'
  +'</div></main>';
+}
+
+/* ---------- 课本（译林版七上） ---------- */
+function bookHTML(){
+ var h=hdr('课本 · 七上')+'<main>';
+ h+='<div class="card muted">江苏省徐州市丰县用的译林版（2024）七年级上册，共 8 个单元。点开单元看单词表和重点句型，可以直接背、直接测。</div>';
+ UNITS.forEach(function(u,i){
+  h+='<button class="btn" onclick="view(\'unit\','+i+')"><span class="tnum">'+(i+1)+'</span>'
+   +'<span class="bt"><span class="b1">'+esc(u.n)+'</span><span class="b2">'+u.words.length+' 词 · '+u.sent.length+' 个句型</span></span>'
+   +'<span class="chev">'+IC.chev+'</span></button>';
+ });
+ h+='<div class="card muted" style="font-size:13px">单词和句型按译林版七上各单元整理，课上讲的细节以你课本为准。</div>';
+ return h+'</main>';
+}
+function unitHTML(){
+ var u=UNITS[STATE.a]||UNITS[0];
+ var h=hdr('课本',"view('book')")+'<main>';
+ h+='<div class="card"><div class="ht" style="font-size:19px">'+esc(u.n)+'</div><div class="muted" style="margin-top:4px">'+esc(u.tip)+'</div></div>';
+ h+='<button class="btn pri" onclick="startUnitWords('+STATE.a+')">背这一单元的单词（'+u.words.length+' 个）</button>';
+ h+='<button class="btn" onclick="unitQuiz('+STATE.a+')">测这一单元（8 题）</button>';
+ h+='<div class="sec">单词表</div><div class="card">';
+ h+=u.words.map(function(w){
+  return '<div class="wrow"><div><div class="e">'+esc(w[0])+'</div><div class="z">'+esc(w[2])+'　'+esc(w[1])+'</div></div>'
+   +'<button class="chip" onclick="speak(\''+esc(w[0])+'\',true)">'+IC.sound+'</button></div>';
+ }).join('');
+ h+='</div>';
+ h+='<div class="sec">重点句型</div><div class="card">';
+ h+=u.sent.map(function(x){
+  return '<div class="wrow"><div><div class="e" style="font-weight:500;font-size:15px">'+esc(x[0])+'</div><div class="z">'+esc(x[1])+'</div></div>'
+   +'<button class="chip" onclick="speak(\''+esc(x[0]).replace(/'/g,'')+'\')">'+IC.sound+'</button></div>';
+ }).join('');
+ h+='</div></main>';
+ return h;
+}
+function startUnitWords(i){
+ var u=UNITS[i];
+ WS={list:shuffle(u.words.map(function(w){return {en:w[0],zh:w[1],ipa:w[2]}})).slice(0,10),i:0,rev:false,known:0,gi:-1};
+ view('wordrun');
+}
+function unitQuiz(i){
+ var u=UNITS[i],pool=u.words.map(function(w){return {en:w[0],zh:w[1],ipa:w[2]}}),out=[];
+ shuffle(pool).slice(0,8).forEach(function(w,j){
+  if(j%3===0)out.push(mkChoice('<b>'+esc(w.en)+'</b> '+esc(w.ipa)+' 是什么意思？',w.zh,other(pool,'zh',w.zh,3),w.en+' = '+w.zh));
+  else if(j%3===1)out.push(mkChoice('「'+esc(w.zh)+'」用英语怎么说？',w.en,other(pool,'en',w.en,3),w.en+' = '+w.zh));
+  else out.push({kind:'type',stem:'写出英语：'+esc(w.zh),ans:w.en,hint:w.ipa,why:w.en+' '+w.ipa+' = '+w.zh});
+ });
+ quizStart(out,'Unit 测验',function(){});
 }
 
 /* ---------- 语法 ---------- */
@@ -822,6 +932,13 @@ document.addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('button'):null;
  if(t&&navigator.vibrate){try{navigator.vibrate(6)}catch(_){}}
 },true);
+
+/* PWA：装到桌面 + 离线可用（只在 https 下生效） */
+try{
+ if('serviceWorker' in navigator&&location.protocol==='https:'){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+ }
+}catch(e){}
 
 render();
 </script>
