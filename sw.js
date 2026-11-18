@@ -1,5 +1,5 @@
 /* 英语补底：网络优先，断网时用缓存 */
-var CACHE='en7-v1';
+var CACHE='en7-v2';
 var ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS)}).then(function(){return self.skipWaiting()}));

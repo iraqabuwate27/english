@@ -10,7 +10,7 @@
 <title>英语补底</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon-180.png">
 <style>
 :root{
  color-scheme:light;
@@ -696,7 +696,7 @@ function phonHTML(){
  PH.forEach(function(g){
   h+='<div class="sec">'+esc(g.t)+'</div><div class="pgrid">';
   g.l.forEach(function(p){
-   h+='<button class="pc" onclick="speak(\''+p[1]+'\')"><span class="s">/'+esc(p[0])+'/</span><span class="w">'+esc(p[1])+'</span></button>';
+   h+='<button class="pc" onclick="speak(\''+p[1]+'\',true)"><span class="s">/'+esc(p[0])+'/</span><span class="w">'+esc(p[1])+'</span></button>';
   });
   h+='</div>';
  });
