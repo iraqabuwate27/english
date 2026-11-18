@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F3F7FD">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>英语补底</title>
+<style>
+:root{
+ color-scheme:light;
+ --bg:#F3F7FD;--tx:#0B1524;--sub:#6B7A90;
+ --acc:#0A6CFF;--acc2:rgba(10,108,255,.08);
+ --line:rgba(16,44,88,.07);--fill:rgba(16,44,88,.045);
+ --ok:#0E7C3A;--okbg:rgba(18,140,66,.10);
+ --bad:#C62828;--badbg:rgba(214,45,32,.08);
+ --r:24px;
+ --sh:0 1px 1.5px rgba(13,38,76,.05),0 16px 36px -20px rgba(13,38,76,.30);
+ --sh-sm:0 1px 1px rgba(13,38,76,.04),0 10px 22px -16px rgba(13,38,76,.32);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{margin:0;min-height:100dvh;color:var(--tx);overflow-x:hidden;
+ background:radial-gradient(900px 520px at 12% -8%,#E4EFFF 0%,rgba(228,239,255,0) 62%),
+  radial-gradient(760px 460px at 104% 2%,#E9F2FF 0%,rgba(233,242,255,0) 58%),
+  linear-gradient(178deg,#F7FAFF 0%,#F2F6FD 46%,#F5F8FE 100%);
+ background-attachment:fixed;
+ font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",system-ui,sans-serif;
+ letter-spacing:-.011em;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:4px;padding:calc(11px + env(safe-area-inset-top)) 18px 11px;
+ background:rgba(250,252,255,.85);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
+ border-bottom:1px solid rgba(16,44,88,.055)}
+header h1{font-size:17px;font-weight:650;margin:0;flex:1;letter-spacing:-.015em}
+.back{border:0;background:none;color:var(--acc);padding:6px 8px 6px 0;margin-right:2px;display:flex;align-items:center;cursor:pointer}
+.back svg{width:22px;height:22px}
+main{max-width:620px;margin:0 auto;padding:18px 16px 108px;animation:in .36s cubic-bezier(.22,.61,.36,1)}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{position:relative;padding:18px;margin-bottom:14px;border-radius:var(--r);
+ background:linear-gradient(180deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.76) 100%);
+ border:1px solid rgba(255,255,255,.92);
+ box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.95)}
+.muted{color:var(--sub);font-size:15px;line-height:1.55}
+.center{text-align:center}
+.hero{background:linear-gradient(158deg,#EAF2FF 0%,#F6FAFF 46%,#FFFFFF 100%);overflow:hidden}
+.hero:after{content:"";position:absolute;right:-70px;top:-90px;width:230px;height:230px;border-radius:50%;
+ background:radial-gradient(circle,rgba(10,108,255,.16),rgba(10,108,255,0) 68%);pointer-events:none}
+.ht{font-size:21px;font-weight:700;letter-spacing:-.022em}
+.hsub{color:var(--sub);font-size:14px;margin:3px 0 15px}
+.brow{display:flex;align-items:center;gap:11px;font-size:14px;margin:10px 0}
+.brow>span:first-child{width:34px;color:var(--sub)}
+.bv{width:46px;text-align:right;color:var(--sub);font-variant-numeric:tabular-nums;font-size:13px}
+.bar{position:relative;flex:1;height:10px;border-radius:99px;overflow:hidden;
+ background:linear-gradient(180deg,rgba(16,44,88,.085),rgba(16,44,88,.05));
+ box-shadow:inset 0 1px 2px rgba(16,44,88,.10)}
+.bar i{position:relative;display:block;height:100%;border-radius:99px;
+ background:linear-gradient(180deg,#5AA6FF 0%,#0A6CFF 100%);
+ box-shadow:0 3px 8px -2px rgba(10,108,255,.55),inset 0 1px 0 rgba(255,255,255,.45);
+ transition:width .6s cubic-bezier(.22,.61,.36,1)}
+.bar i:after{content:"";position:absolute;inset:0;border-radius:99px;
+ background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 58%)}
+.stats{display:flex;text-align:center}
+.stats .st{flex:1}
+.num{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.lb{font-size:12px;color:var(--sub);margin-top:1px}
+.tip,.warn{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--sub);line-height:1.55}
+.tip .ico,.warn .ico{flex:none;margin-top:1px}
+.warn{color:#B4530A}
+.tip{background:linear-gradient(180deg,rgba(234,243,255,.85),rgba(244,249,255,.7));box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.ico{display:inline-flex;align-items:center;justify-content:center;color:var(--acc)}
+.ico svg{width:22px;height:22px}
+.btn{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:15px 16px;margin-bottom:11px;
+ border:1px solid rgba(255,255,255,.95);border-radius:18px;color:var(--tx);
+ background:linear-gradient(180deg,#FFFFFF 0%,#FDFEFF 58%,#F8FBFF 100%);
+ box-shadow:var(--sh-sm),inset 0 1px 0 #fff;
+ font:inherit;font-size:17px;font-weight:500;text-align:left;cursor:pointer;
+ transition:transform .22s cubic-bezier(.22,.61,.36,1),box-shadow .22s,filter .22s}
+.btn:active{transform:scale(.972);box-shadow:0 1px 1px rgba(13,38,76,.05),inset 0 1px 0 #fff}
+.btn .bt{display:flex;flex-direction:column;flex:1;min-width:0}
+.btn .b1{font-size:16px;font-weight:600;letter-spacing:-.012em}
+.btn .b2{font-size:13px;color:var(--sub);font-weight:400;margin-top:1px}
+.btn .chev{display:flex;color:#9AA9BE}
+.btn .chev svg{width:18px;height:18px}
+.btn>svg{width:22px;height:22px;flex:none}
+.btn.pri{justify-content:center;text-align:center;font-weight:650;color:#fff;
+ border-color:rgba(255,255,255,.22);
+ background:linear-gradient(180deg,#4A9BFF 0%,#0A6CFF 62%,#0A63F0 100%);
+ box-shadow:0 16px 30px -16px rgba(10,108,255,.9),0 2px 6px -2px rgba(10,90,220,.35),inset 0 1px 0 rgba(255,255,255,.42)}
+.btn.pri .ico{color:#fff}
+.btn.ok{justify-content:center;text-align:center;font-weight:650;color:var(--ok);box-shadow:none;
+ background:linear-gradient(180deg,rgba(18,140,66,.12),rgba(18,140,66,.07));border-color:rgba(18,140,66,.14)}
+.btn.bad{justify-content:center;text-align:center;font-weight:650;color:var(--bad);box-shadow:none;
+ background:linear-gradient(180deg,rgba(214,45,32,.10),rgba(214,45,32,.06));border-color:rgba(214,45,32,.12)}
+.btn.ghost{justify-content:center;text-align:center;background:transparent;box-shadow:none;border-color:transparent;color:var(--sub)}
+.btn.mid{justify-content:center;text-align:center}
+.row2{display:flex;gap:10px}
+.row2 .btn{margin-bottom:0}
+.pill{display:inline-block;padding:4px 13px;border-radius:99px;font-size:13px;color:var(--sub);
+ background:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.95);box-shadow:0 1px 2px rgba(13,38,76,.05);
+ font-variant-numeric:tabular-nums}
+.flash{text-align:center;padding:38px 18px 32px;min-height:248px;display:flex;flex-direction:column;
+ justify-content:center;gap:5px;cursor:pointer;border-radius:28px;
+ background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.72));
+ box-shadow:0 2px 2px rgba(13,38,76,.03),0 26px 50px -30px rgba(13,38,76,.45),inset 0 1px 0 #fff;
+ transition:transform .22s cubic-bezier(.22,.61,.36,1)}
+.flash:active{transform:scale(.988)}
+.big{font-size:44px;font-weight:700;letter-spacing:-.028em;line-height:1.16;word-break:break-word}
+.ipa{font-size:17px;color:var(--sub);letter-spacing:0}
+.bigipa{font-size:25px;font-weight:600;color:var(--acc);letter-spacing:0}
+.zh{font-size:24px;font-weight:650;color:var(--acc);margin-top:5px}
+.hint{font-size:14px;color:var(--sub);margin-top:7px}
+.iconbtn{display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin:2px auto 18px;
+ border:1px solid rgba(255,255,255,.95);border-radius:26px;color:var(--acc);cursor:pointer;
+ background:linear-gradient(180deg,#FFFFFF,#F7FAFF);
+ box-shadow:0 10px 22px -14px rgba(13,38,76,.5),inset 0 1px 0 #fff;transition:transform .2s}
+.iconbtn:active{transform:scale(.93)}
+.iconbtn svg{width:24px;height:24px}
+.stem{font-size:18px;font-weight:600;line-height:1.55;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;padding:14px 16px;margin-bottom:9px;border-radius:16px;
+ border:1px solid rgba(16,44,88,.05);background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(247,250,255,.85));
+ color:var(--tx);font:inherit;font-size:16px;cursor:pointer;
+ box-shadow:0 1px 1px rgba(13,38,76,.03),inset 0 1px 0 #fff;
+ transition:transform .18s,background .18s}
+.opt:active{transform:scale(.985)}
+.opt.ok{background:linear-gradient(180deg,rgba(18,140,66,.14),rgba(18,140,66,.08));border-color:rgba(18,140,66,.2);color:var(--ok);font-weight:650}
+.opt.no{background:linear-gradient(180deg,rgba(214,45,32,.10),rgba(214,45,32,.06));border-color:rgba(214,45,32,.16);color:var(--bad)}
+.inp{width:100%;padding:15px 16px;margin-bottom:10px;border-radius:16px;border:1px solid rgba(255,255,255,.95);
+ background:linear-gradient(180deg,#FFFFFF,#FBFDFF);color:var(--tx);font:inherit;font-size:18px;
+ box-shadow:inset 0 1px 2px rgba(16,44,88,.06),0 1px 0 #fff}
+.inp:focus{outline:2px solid rgba(10,108,255,.55);outline-offset:-1px}
+.fb{display:flex;gap:11px;align-items:flex-start;padding:14px 16px;border-radius:16px;margin-bottom:12px;font-size:15px}
+.fb.good{background:linear-gradient(180deg,rgba(18,140,66,.14),rgba(18,140,66,.08));color:var(--ok)}
+.fb.bad{background:linear-gradient(180deg,rgba(214,45,32,.11),rgba(214,45,32,.06));color:var(--bad)}
+.fb .ico{color:inherit;flex:none;margin-top:1px}
+.fb .ico svg{width:20px;height:20px}
+.why{color:var(--sub);font-size:14px;margin-top:5px;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:11px 15px;border-radius:14px;
+ border:1px solid rgba(16,44,88,.05);background:linear-gradient(180deg,#FFFFFF,#F7FAFF);color:var(--tx);
+ font:inherit;font-size:16px;cursor:pointer;box-shadow:0 1px 1px rgba(13,38,76,.03),inset 0 1px 0 #fff}
+.chip:active{transform:scale(.96)}
+.chip svg{width:20px;height:20px;color:var(--acc)}
+.slot{min-height:56px;border-radius:16px;padding:8px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+ background:rgba(16,44,88,.035);box-shadow:inset 0 1px 3px rgba(16,44,88,.06);border:1px dashed rgba(10,108,255,.22)}
+.slot .chip{background:linear-gradient(180deg,rgba(10,108,255,.12),rgba(10,108,255,.07));
+ border-color:rgba(10,108,255,.16);color:var(--acc);font-weight:600;box-shadow:none}
+.ph{color:var(--sub);font-size:14px;padding:4px 6px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;max-width:620px;margin:0 auto;
+ padding:7px 6px calc(7px + env(safe-area-inset-bottom));
+ background:rgba(255,255,255,.92);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);
+ border-top:1px solid rgba(255,255,255,.9);box-shadow:0 -14px 36px -26px rgba(13,38,76,.5)}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;border:0;
+ background:none;color:#8A98AC;font:inherit;font-size:10px;font-weight:500;cursor:pointer;transition:color .2s,transform .2s}
+nav button:active{transform:scale(.94)}
+nav button svg{width:24px;height:24px}
+nav button.on{color:var(--acc)}
+.sec{font-size:13px;font-weight:600;color:var(--sub);margin:20px 6px 9px;letter-spacing:0}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.pc{border:1px solid rgba(255,255,255,.95);border-radius:16px;padding:12px 2px 10px;text-align:center;
+ background:linear-gradient(180deg,#FFFFFF,#F8FBFF);cursor:pointer;
+ box-shadow:0 1px 1px rgba(13,38,76,.04),0 10px 20px -18px rgba(13,38,76,.5),inset 0 1px 0 #fff;
+ transition:transform .18s}
+.pc:active{transform:scale(.94)}
+.pc .s{display:block;font-size:18px;font-weight:600;letter-spacing:0}
+.pc .w{display:block;font-size:11px;color:var(--sub);margin-top:2px}
+.tnum{flex:none;width:28px;height:28px;border-radius:14px;background:rgba(10,108,255,.09);color:var(--acc);
+ display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.lesson .para{margin:0 0 12px;font-size:16px;line-height:1.65}
+.lesson .para:last-child{margin-bottom:0}
+.lesson b{color:var(--acc)}
+.ex{display:block;background:linear-gradient(180deg,rgba(244,248,255,.95),rgba(250,252,255,.85));
+ border:1px solid rgba(16,44,88,.045);border-radius:12px;padding:9px 13px;margin:0 0 10px;font-size:16px}
+.ex i{display:block;font-style:normal;color:var(--sub);font-size:13px}
+table.tb{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:10px}
+table.tb td,table.tb th{border:1px solid rgba(16,44,88,.08);padding:6px 3px;text-align:center}
+table.tb th{background:rgba(10,108,255,.05);font-weight:600}
+.wrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(16,44,88,.055)}
+.wrow:last-of-type{border-bottom:0}
+.wrow .e{font-size:16px;font-weight:600}
+.wrow .z{font-size:13px;color:var(--sub);margin-top:1px}
+.done{color:var(--ok);font-weight:600}
+.tips p{margin:0 0 8px;font-size:15px;line-height:1.58}
+.tips p:last-child{margin:0}
+.tips b{color:var(--acc)}
+#modal{position:fixed;inset:0;z-index:60;display:none}
+#modal.on{display:block}
+.mask{position:absolute;inset:0;background:rgba(12,26,50,.20);
+ backdrop-filter:blur(10px) saturate(120%);-webkit-backdrop-filter:blur(10px) saturate(120%);
+ animation:fade .28s ease}
+.sheet{position:absolute;left:0;right:0;bottom:0;margin:0 auto;max-width:620px;padding:10px 20px calc(20px + env(safe-area-inset-bottom));
+ background:rgba(255,255,255,.82);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
+ border-radius:30px 30px 0 0;border-top:1px solid rgba(255,255,255,.95);
+ box-shadow:0 -24px 70px -24px rgba(13,38,76,.45);
+ animation:up .36s cubic-bezier(.22,.61,.36,1)}
+.grab{width:38px;height:5px;border-radius:3px;background:rgba(16,44,88,.16);margin:4px auto 14px}
+.sheet h3{margin:0 0 6px;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.sheet p{margin:0 0 18px;color:var(--sub);font-size:15px;line-height:1.55}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+@supports (corner-shape:superellipse(1.6)){
+ .card,.btn,.opt,.chip,.pc,.iconbtn,.inp,.slot,.pill,.fb,.flash,.ex,.tnum,.sheet{border-radius:22px;corner-shape:superellipse(1.65)}
+ .pill,.bar,.bar i,.tnum{border-radius:99px;corner-shape:round}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav id="nav"></nav>
+<div id="modal"><div class="mask" onclick="closeSheet()"></div><div class="sheet" id="sheet"></div></div>
+<script>
+/* ---------- 图标（线性 SVG，不用 emoji） ---------- */
+var IC={
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.6 12 4l8 6.6"/><path d="M6.6 9.5V19a1 1 0 0 0 1 1h2.2v-4.6h4.4V20h2.2a1 1 0 0 0 1-1V9.5"/></svg>',
+book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.6C10.3 5.4 8.2 4.8 6 4.8H4.4v13H6c2.2 0 4.3.6 6 1.8 1.7-1.2 3.8-1.8 6-1.8h1.6v-13H18c-2.2 0-4.3.6-6 1.8Z"/><path d="M12 6.6v13"/></svg>',
+text:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/></svg>',
+wave:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5v3"/><path d="M7 7.5v9"/><path d="M11 4.5v15"/><path d="M15 7.5v9"/><path d="M19 10.5v3"/></svg>',
+pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.4 8.6a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M14.4 6.6l3 3"/></svg>',
+undo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.6H13a5.5 5.5 0 0 1 0 11h-2.3"/><path d="M8 5.6 4.5 9.6 8 13.6"/></svg>',
+sound:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9.6v4.8h3l4 3.4V6.2L8 9.6H5Z"/><path d="M15.4 9.2a4 4 0 0 1 0 5.6"/><path d="M17.7 6.9a7.2 7.2 0 0 1 0 10.2"/></svg>',
+check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 12.6l4.6 4.6L19.2 6.8"/></svg>',
+x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 6.2l11.6 11.6"/><path d="M17.8 6.2 6.2 17.8"/></svg>',
+info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3"/><path d="M12 11.2v5"/><circle cx="12" cy="8.2" r=".95" fill="currentColor" stroke="none"/></svg>',
+chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>',
+back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+shuffle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3.5l9 10H20"/><path d="M4 17h3.5l9-10H20"/><path d="M17.5 4.5 20 7l-2.5 2.5"/><path d="M17.5 14.5 20 17l-2.5 2.5"/></svg>'
+};
+function ic(n){return '<span class="ico">'+(IC[n]||'')+'</span>'}
+
+/* ---------- 数据 ---------- */
+var WG=[
+{n:'三上 · 数字 / 颜色 / 文具 / 动物',l:[['one','一','/wʌn/'],['two','二','/tuː/'],['three','三','/θriː/'],['four','四','/fɔː/'],['five','五','/faɪv/'],['six','六','/sɪks/'],['seven','七','/ˈsevn/'],['eight','八','/eɪt/'],['nine','九','/naɪn/'],['ten','十','/ten/'],['red','红色的','/red/'],['yellow','黄色的','/ˈjeləʊ/'],['blue','蓝色的','/bluː/'],['green','绿色的','/ɡriːn/'],['black','黑色的','/blæk/'],['white','白色的','/waɪt/'],['pen','钢笔','/pen/'],['pencil','铅笔','/ˈpensl/'],['book','书','/bʊk/'],['bag','书包','/bæɡ/'],['ruler','尺子','/ˈruːlə/'],['rubber','橡皮','/ˈrʌbə/'],['cat','猫','/kæt/'],['dog','狗','/dɒɡ/'],['bird','鸟','/bɜːd/'],['fish','鱼','/fɪʃ/']]},
+{n:'三下 · 家人 / 身体 / 食物',l:[['father','爸爸','/ˈfɑːðə/'],['mother','妈妈','/ˈmʌðə/'],['brother','哥哥；弟弟','/ˈbrʌðə/'],['sister','姐姐；妹妹','/ˈsɪstə/'],['grandpa','爷爷；外公','/ˈɡrænpɑː/'],['grandma','奶奶；外婆','/ˈɡrænmɑː/'],['head','头','/hed/'],['hand','手','/hænd/'],['eye','眼睛','/aɪ/'],['ear','耳朵','/ɪə/'],['nose','鼻子','/nəʊz/'],['mouth','嘴','/maʊθ/'],['apple','苹果','/ˈæpl/'],['banana','香蕉','/bəˈnɑːnə/'],['orange','橙子；橙色的','/ˈɒrɪndʒ/'],['pear','梨','/peə/'],['milk','牛奶','/mɪlk/'],['bread','面包','/bred/'],['egg','鸡蛋','/eɡ/'],['rice','米饭','/raɪs/'],['cake','蛋糕','/keɪk/'],['water','水','/ˈwɔːtə/'],['juice','果汁','/dʒuːs/'],['sweet','糖果；甜的','/swiːt/'],['ice cream','冰淇淋','/ˌaɪs ˈkriːm/'],['hot dog','热狗','/ˌhɒt ˈdɒɡ/']]},
+{n:'四上 · 学校 / 星期 / 衣服',l:[['school','学校','/skuːl/'],['classroom','教室','/ˈklɑːsruːm/'],['teacher','老师','/ˈtiːtʃə/'],['student','学生','/ˈstjuːdnt/'],['friend','朋友','/frend/'],['desk','课桌','/desk/'],['chair','椅子','/tʃeə/'],['blackboard','黑板','/ˈblækbɔːd/'],['window','窗户','/ˈwɪndəʊ/'],['door','门','/dɔː/'],['Monday','星期一','/ˈmʌndeɪ/'],['Tuesday','星期二','/ˈtjuːzdeɪ/'],['Wednesday','星期三','/ˈwenzdeɪ/'],['Thursday','星期四','/ˈθɜːzdeɪ/'],['Friday','星期五','/ˈfraɪdeɪ/'],['Saturday','星期六','/ˈsætədeɪ/'],['Sunday','星期日','/ˈsʌndeɪ/'],['morning','早上','/ˈmɔːnɪŋ/'],['afternoon','下午','/ˌɑːftəˈnuːn/'],['evening','傍晚；晚上','/ˈiːvnɪŋ/'],['coat','外套','/kəʊt/'],['shirt','衬衫','/ʃɜːt/'],['skirt','裙子','/skɜːt/'],['trousers','裤子','/ˈtraʊzəz/'],['shoes','鞋','/ʃuːz/'],['English','英语','/ˈɪŋɡlɪʃ/']]},
+{n:'四下 · 季节天气 / 房间 / 动作',l:[['spring','春天','/sprɪŋ/'],['summer','夏天','/ˈsʌmə/'],['autumn','秋天','/ˈɔːtəm/'],['winter','冬天','/ˈwɪntə/'],['sunny','晴朗的','/ˈsʌni/'],['rainy','下雨的','/ˈreɪni/'],['cloudy','多云的','/ˈklaʊdi/'],['windy','有风的','/ˈwɪndi/'],['hot','热的','/hɒt/'],['cold','冷的','/kəʊld/'],['warm','暖和的','/wɔːm/'],['cool','凉爽的','/kuːl/'],['bedroom','卧室','/ˈbedruːm/'],['kitchen','厨房','/ˈkɪtʃɪn/'],['bathroom','浴室','/ˈbɑːθruːm/'],['living room','客厅','/ˈlɪvɪŋ ruːm/'],['garden','花园','/ˈɡɑːdn/'],['run','跑','/rʌn/'],['jump','跳','/dʒʌmp/'],['swim','游泳','/swɪm/'],['sing','唱歌','/sɪŋ/'],['dance','跳舞','/dɑːns/'],['draw','画画','/drɔː/'],['read','读；阅读','/riːd/'],['write','写','/raɪt/'],['play','玩；打（球）','/pleɪ/']]},
+{n:'五上 · 日常作息 / 职业 / 交通',l:[['get up','起床','/ˌɡet ˈʌp/'],['go to school','去上学','/ˌɡəʊ tə ˈskuːl/'],['have breakfast','吃早饭','/ˌhæv ˈbrekfəst/'],['have lunch','吃午饭','/ˌhæv ˈlʌntʃ/'],['have dinner','吃晚饭','/ˌhæv ˈdɪnə/'],['do homework','做作业','/ˌduː ˈhəʊmwɜːk/'],['watch TV','看电视','/ˌwɒtʃ ˌtiː ˈviː/'],['go to bed','上床睡觉','/ˌɡəʊ tə ˈbed/'],['doctor','医生','/ˈdɒktə/'],['nurse','护士','/nɜːs/'],['driver','司机','/ˈdraɪvə/'],['farmer','农民','/ˈfɑːmə/'],['worker','工人','/ˈwɜːkə/'],['policeman','警察','/pəˈliːsmən/'],['cook','厨师；做饭','/kʊk/'],['bus','公共汽车','/bʌs/'],['car','小汽车','/kɑː/'],['bike','自行车','/baɪk/'],['train','火车','/treɪn/'],['plane','飞机','/pleɪn/'],['ship','轮船','/ʃɪp/'],['subway','地铁','/ˈsʌbweɪ/'],['always','总是','/ˈɔːlweɪz/'],['usually','通常','/ˈjuːʒuəli/'],['often','经常','/ˈɒfn/'],['sometimes','有时','/ˈsʌmtaɪmz/']]},
+{n:'五下 / 六上 · 地点 / 方位 / 形容',l:[['hospital','医院','/ˈhɒspɪtl/'],['park','公园','/pɑːk/'],['library','图书馆','/ˈlaɪbrəri/'],['supermarket','超市','/ˈsuːpəmɑːkɪt/'],['cinema','电影院','/ˈsɪnəmə/'],['museum','博物馆','/mjuˈziːəm/'],['restaurant','餐馆','/ˈrestrɒnt/'],['post office','邮局','/ˈpəʊst ˌɒfɪs/'],['left','左边','/left/'],['right','右边','/raɪt/'],['straight','直的；一直','/streɪt/'],['near','在……附近','/nɪə/'],['far','远的','/fɑː/'],['turn','转弯','/tɜːn/'],['never','从不','/ˈnevə/'],['tall','高的','/tɔːl/'],['short','矮的；短的','/ʃɔːt/'],['long','长的','/lɒŋ/'],['big','大的','/bɪɡ/'],['small','小的','/smɔːl/'],['young','年轻的','/jʌŋ/'],['old','老的；旧的','/əʊld/'],['heavy','重的','/ˈhevi/'],['light','轻的','/laɪt/'],['beautiful','美丽的','/ˈbjuːtɪfl/'],['interesting','有趣的','/ˈɪntrəstɪŋ/']]},
+{n:'六下 · 旅行 / 自然 / 常用词',l:[['holiday','假期','/ˈhɒlədeɪ/'],['travel','旅行','/ˈtrævl/'],['visit','参观；拜访','/ˈvɪzɪt/'],['ticket','票','/ˈtɪkɪt/'],['hotel','旅馆','/həʊˈtel/'],['beach','海滩','/biːtʃ/'],['mountain','山','/ˈmaʊntən/'],['river','河','/ˈrɪvə/'],['lake','湖','/leɪk/'],['forest','森林','/ˈfɒrɪst/'],['weather','天气','/ˈweðə/'],['world','世界','/wɜːld/'],['country','国家；乡村','/ˈkʌntri/'],['city','城市','/ˈsɪti/'],['village','村庄','/ˈvɪlɪdʒ/'],['exciting','令人兴奋的','/ɪkˈsaɪtɪŋ/'],['difficult','困难的','/ˈdɪfɪkəlt/'],['easy','容易的','/ˈiːzi/'],['careful','小心的','/ˈkeəfl/'],['remember','记得','/rɪˈmembə/'],['forget','忘记','/fəˈɡet/'],['because','因为','/bɪˈkɒz/'],['before','在……之前','/bɪˈfɔː/'],['after','在……之后','/ˈɑːftə/'],['money','钱','/ˈmʌni/'],['homework','作业','/ˈhəʊmwɜːk/']]},
+{n:'七上 · 译林版核心词',l:[['classmate','同班同学','/ˈklɑːsmeɪt/'],['hobby','爱好','/ˈhɒbi/'],['sport','运动','/spɔːt/'],['football','足球','/ˈfʊtbɔːl/'],['basketball','篮球','/ˈbɑːskɪtbɔːl/'],['volleyball','排球','/ˈvɒlibɔːl/'],['swimming','游泳（运动）','/ˈswɪmɪŋ/'],['member','成员','/ˈmembə/'],['club','俱乐部','/klʌb/'],['subject','学科','/ˈsʌbdʒɪkt/'],['lesson','课','/ˈlesn/'],['timetable','课程表','/ˈtaɪmteɪbl/'],['break','课间休息','/breɪk/'],['celebrate','庆祝','/ˈselɪbreɪt/'],['festival','节日','/ˈfestɪvl/'],['dumpling','饺子','/ˈdʌmplɪŋ/'],['mooncake','月饼','/ˈmuːnkeɪk/'],['lifestyle','生活方式','/ˈlaɪfstaɪl/'],['healthy','健康的','/ˈhelθi/'],['vegetable','蔬菜','/ˈvedʒtəbl/'],['fruit','水果','/fruːt/'],['shopping','购物','/ˈʃɒpɪŋ/'],['clothes','衣服','/kləʊðz/'],['fashion','时尚','/ˈfæʃn/'],['favourite','最喜欢的','/ˈfeɪvərɪt/'],['different','不同的','/ˈdɪfrənt/']]}
+];
+var SENT=[
+['This is my new classmate.','这是我的新同学。'],
+['I am twelve years old.','我十二岁。'],
+['She is good at swimming.','她擅长游泳。'],
+['There are forty students in our class.','我们班有四十名学生。'],
+['He often plays football after school.','他放学后经常踢足球。'],
+['What time do you get up every day?','你每天几点起床？'],
+['My favourite subject is English.','我最喜欢的学科是英语。'],
+['We have four lessons in the morning.','我们上午有四节课。'],
+['Do you like listening to music?','你喜欢听音乐吗？'],
+["He doesn't watch TV in the evening.",'他晚上不看电视。'],
+['Look! The boys are playing basketball.','看！男孩们正在打篮球。'],
+['I want to be a doctor in the future.','我将来想当医生。'],
+['How many books are there on the desk?','桌上有多少本书？'],
+['She goes to school by bike every day.','她每天骑自行车上学。'],
+['Would you like to go shopping with me?','你想和我一起去购物吗？'],
+['It is sunny and warm in spring.','春天阳光明媚又暖和。'],
+['My father works in a hospital.','我爸爸在医院工作。'],
+['They are celebrating the Spring Festival.','他们正在庆祝春节。'],
+['Thanks for your help.','谢谢你的帮助。'],
+["Let's play games together.",'让我们一起玩游戏吧。']
+];
+var LESSONS=[
+{id:'be',t:'① be 动词 am / is / are',tag:'句子的骨架',
+body:['英语句子几乎都离不开 be 动词，它就是中文的「是」。它有三种样子：<b>am / is / are</b>。',
+'<b>我用 am</b>：I am a student. 我是学生。',
+'<b>你用 are</b>：You are my friend. 你是我的朋友。',
+'<b>他、她、它，或一个东西用 is</b>：He is Tom. / She is ten. / It is a cat.',
+'<b>两个以上用 are</b>：We are students. / They are teachers. / Tom and Jim are friends.',
+'口诀：<b>我 am，你 are，is 连着他她它；单数 is，复数 are。</b>',
+'否定句：在 be 后面加 not。is not = isn\u2019t，are not = aren\u2019t，am not 通常写成 I\u2019m not。',
+'疑问句：把 be 提到最前面。Are you a student? — Yes, I am. / No, I\u2019m not.'],
+qs:[['I ___ a middle school student.','am|is|are',0,'主语是 I，用 am。'],
+['My sister ___ ten years old.','am|is|are',1,'My sister 是一个人（单数），用 is。'],
+['Tom and I ___ in the same class.','am|is|are',2,'Tom and I 是两个人，等于 we，用 are。'],
+['It ___ a red apple.','am|is|are',1,'it 是单数，用 is。'],
+['They ___ not at school today.','am|is|are',2,'they 是复数，用 are。'],
+['___ you from Xuzhou?','Am|Is|Are',2,'把 be 提前，you 配 are。'],
+['He ___ my brother. 的否定句是：','He isn\u2019t my brother.|He aren\u2019t my brother.|He am not my brother.',0,'he 用 is，否定是 isn\u2019t。']]},
+
+{id:'this',t:'② this / that / these / those（这是……）',tag:'最常用的指认句',
+body:['这四个词专门用来「指东西」：<br><b>this</b> 这个（近、一个）　<b>that</b> 那个（远、一个）<br><b>these</b> 这些（近、多个）　<b>those</b> 那些（远、多个）',
+'最基本的句子：<span class="ex">This is a pen.<i>这是一支钢笔。</i></span><span class="ex">That is my school.<i>那是我的学校。</i></span>',
+'注意：<b>this / that 后面用 is，these / those 后面用 are</b>。',
+'<span class="ex">These are books.<i>这些是书。</i></span><span class="ex">Those are apples.<i>那些是苹果。</i></span>',
+'问这是什么：What\u2019s this? — It\u2019s a ruler. 问这些是什么：What are these? — They\u2019re rulers.',
+'回答时：this / that 用 <b>it</b> 回答；these / those 用 <b>they</b> 回答。',
+'易错：this is 不能写成 this\u2019s；These is 是错的，必须 These are。'],
+qs:[['___ is my new bike.（指着眼前的车）','This|These|Those',0,'一辆车，近处，用 This is。'],
+['___ are my classmates.（指着身边的同学）','This|These|Those',1,'多个同学、近处，用 These are。'],
+['What\u2019s that? — ___ a bird.','It\u2019s|They\u2019re|This is',0,'问 that，用 it 回答：It\u2019s a bird.'],
+['Those ___ my books.','is|are|am',1,'those 是复数，用 are。'],
+['This ___ a book. Those ___ pens.','is; are|are; is|is; is',0,'this 配 is，those 配 are。'],
+['What are these? — ___ my shoes.','It\u2019s|They\u2019re|This is',1,'问 these，用 they 回答。']]},
+
+{id:'pl',t:'③ 名词单复数（一个 / 两个以上）',tag:'词形变化',
+body:['可数名词：一个用单数，两个以上用<b>复数</b>，复数一般加 <b>s</b>。book → books，pen → pens。',
+'以 s、x、ch、sh 结尾，加 <b>es</b>：bus→buses，box→boxes，watch→watches，dish→dishes。',
+'辅音字母 + y 结尾，变 y 为 i 再加 es：baby→babies，city→cities；元音 + y 直接加 s：boy→boys。',
+'以 f / fe 结尾，多数变 ves：knife→knives，leaf→leaves。',
+'不规则，只能背：man→men，woman→women，child→children，foot→feet，tooth→teeth，mouse→mice，sheep→sheep，fish→fish。',
+'<b>不可数名词</b>没有复数，也不能加 a / an：water、milk、bread、rice、juice、meat、homework、money。要说 two glasses of water。'],
+qs:[['box 的复数是什么？','boxs|boxes|boxies',1,'以 x 结尾加 es：boxes。'],
+['baby 的复数是什么？','babys|babies|babyes',1,'辅音 + y，变 y 为 i 加 es：babies。'],
+['There are two ___ in the room.','child|children|childs',1,'child 的复数是 children。'],
+['I\u2019d like two ___.（knife）','knifes|knives|knife',1,'knife 变 f 为 v 加 es：knives。'],
+['How many ___ are there?（sheep）','sheeps|sheep|sheepes',1,'sheep 单复数同形：sheep。'],
+['下面哪个是不可数名词？','apple|water|book|pen',1,'water 不可数，没有复数，也不能加 a/an。']]},
+
+{id:'art',t:'④ a / an / the（冠词）',tag:'小词大用',
+body:['<b>a / an</b> 表示「一个」，只用在<b>可数名词单数</b>前面。',
+'用 a 还是 an，看<b>读音</b>不看字母：辅音音素前用 a，元音音素前用 an。<br>an apple，an egg，an hour，an English book；a useful book，a university。',
+'<b>the</b> 表示「这个 / 那个」，指双方都知道的东西，或者世界上唯一的东西：the sun，the teacher，the door。',
+'第一次提到用 a/an，第二次提到用 the：<span class="ex">I have a cat. The cat is white.<i>我有一只猫。那只猫是白色的。</i></span>',
+'球类运动前不加 the：play football；乐器前要加 the：play the piano。'],
+qs:[['I have ___ apple.','a|an|the',1,'apple 元音开头，用 an。'],
+['She is ___ English girl.','a|an|the',1,'English 读音 /ɪ/ 元音开头，用 an。'],
+['This is ___ useful book.','a|an|the',0,'useful 读音以 /j/ 开头，是辅音音素，用 a。'],
+['___ sun is bigger than the moon.','A|An|The',2,'太阳独一无二，用 The。'],
+['I have a dog. ___ dog is black.','A|An|The',2,'第二次提到，用 The。'],
+['He is ___ honest boy.','a|an|the',1,'honest 的 h 不发音，读音以元音开头，用 an。']]},
+
+{id:'pron',t:'⑤ 人称代词和物主代词',tag:'我、我的、给我',
+body:['这张表背下来，比什么都值：<table class="tb"><tr><th>主格<br>（做主语）</th><th>宾格<br>（动词后）</th><th>形容词性<br>（+名词）</th><th>名词性<br>（单独用）</th></tr><tr><td>I</td><td>me</td><td>my</td><td>mine</td></tr><tr><td>you</td><td>you</td><td>your</td><td>yours</td></tr><tr><td>he</td><td>him</td><td>his</td><td>his</td></tr><tr><td>she</td><td>her</td><td>her</td><td>hers</td></tr><tr><td>it</td><td>it</td><td>its</td><td>its</td></tr><tr><td>we</td><td>us</td><td>our</td><td>ours</td></tr><tr><td>they</td><td>them</td><td>their</td><td>theirs</td></tr></table>',
+'主格放在句子开头做主语：<b>I</b> am a student. <b>She</b> is my sister.',
+'宾格放在动词或介词后面：Give <b>me</b> the book. Help <b>us</b>, please.',
+'形容词性物主代词后面必须跟名词：my book，his name，their school。',
+'名词性物主代词自己就能用：This is my book. = This book is <b>mine</b>.',
+'注意：<b>its</b> 是「它的」，<b>it\u2019s</b> 是「它是」，写错就扣分。'],
+qs:[['This is ___ English book.（I）','I|my|me|mine',1,'修饰名词 book，用 my。'],
+['Please give ___ the pen.（he）','he|his|him',2,'动词 give 后面用宾格 him。'],
+['___ name is Lily.（she）','She|Her|Hers',1,'修饰 name，用 Her。'],
+['We love ___ school.（we）','us|our|ours',1,'修饰 school，用 our。'],
+['The book is ___.（I）','my|me|mine',2,'没有名词了，用名词性物主代词 mine。'],
+['Can you help ___?（we）','we|us|our',1,'动词 help 后面用宾格 us。']]},
+
+{id:'ps',t:'⑥ 一般现在时 + 第三人称单数',tag:'最常考的时态',
+body:['一般现在时表示：<b>经常做的事、习惯、事实</b>。标志词：always，usually，often，sometimes，every day，on Sundays。',
+'主语是 I / you / we / they 或复数 → 动词用<b>原形</b>：<span class="ex">I get up at six.<i>我六点起床。</i></span>',
+'主语是 he / she / it 或单数 → 动词加 <b>s / es</b>（第三人称单数）：<span class="ex">He gets up at six.<i>他六点起床。</i></span>',
+'变化规则：一般加 s；go→goes，watch→watches，do→does；辅音+y 变 ies：study→studies；have→has。',
+'否定句：<b>don\u2019t / doesn\u2019t + 动词原形</b>。He <b>doesn\u2019t like</b> eggs.（doesn\u2019t 后面一定是原形，不能加 s）',
+'疑问句：Do / Does 开头，后面也是原形：Does he like eggs? — Yes, he does. / No, he doesn\u2019t.'],
+qs:[['He ___ to school by bike every day.','go|goes|going',1,'主语 He，动词加 es：goes。'],
+['My parents ___ TV in the evening.','watch|watches|watching',0,'parents 是复数，用原形 watch。'],
+['She ___ like milk.','don\u2019t|doesn\u2019t|isn\u2019t',1,'主语 She，否定用 doesn\u2019t + 原形。'],
+['___ your brother play football?','Do|Does|Is',1,'your brother 是单数，用 Does。'],
+['Lily often ___ her homework after dinner.','do|does|doing',1,'Lily 是第三人称单数，do 变 does。'],
+['I ___ have lunch at school.','don\u2019t|doesn\u2019t|am not',0,'主语 I，否定用 don\u2019t。']]},
+
+{id:'pc',t:'⑦ 现在进行时（正在做）',tag:'be + doing',
+body:['结构：<b>am / is / are + 动词 ing</b>，表示现在正在发生的事。标志词：now，look，listen，at the moment。',
+'<span class="ex">I am reading.<i>我正在读书。</i></span><span class="ex">Look! The boys are playing football.<i>看！男孩们正在踢足球。</i></span>',
+'ing 变化：一般直接加 ing；以不发音 e 结尾去 e 加 ing：write→writing，make→making；重读闭音节双写末尾字母：run→running，swim→swimming，sit→sitting；ie 变 y 加 ing：lie→lying。',
+'否定：be + not + doing：He isn\u2019t sleeping.',
+'疑问：be 提前：Are you listening? — Yes, I am.',
+'对比：He plays football every day.（经常）　He is playing football now.（正在）'],
+qs:[['Look! The boys ___ football.','play|are playing|plays',1,'Look 提示正在发生，用 are playing。'],
+['Listen! Someone ___ in the next room.','sing|sings|is singing',2,'Listen 提示正在发生，someone 单数用 is singing。'],
+['My mother ___ now.（cook）','cooks|is cooking|cooking',1,'now 提示进行时，用 is cooking。'],
+['run 的 ing 形式是？','runing|running|runs',1,'重读闭音节双写 n：running。'],
+['What ___ you ___ now?','are; doing|do; do|is; doing',0,'you 配 are，进行时用 doing。'],
+['He ___ sleeping. He is reading.','isn\u2019t|doesn\u2019t|aren\u2019t',0,'进行时的否定是 be + not：isn\u2019t sleeping。']]},
+
+{id:'there',t:'⑧ There be 句型（某地有某物）',tag:'有',
+body:['<b>There is + 单数 / 不可数</b>；<b>There are + 复数</b>。表示「某地有某物」。',
+'<span class="ex">There is a book on the desk.<i>桌上有一本书。</i></span><span class="ex">There are some apples in the basket.<i>篮子里有一些苹果。</i></span>',
+'否定：There isn\u2019t / There aren\u2019t；疑问：Is there...? Are there...?',
+'<b>就近原则</b>：There <b>is</b> a book and two pens on the desk.（看最靠近的那个名词）',
+'和 have 的区别：I have a book.（我拥有）　There is a book on the desk.（桌上存在）'],
+qs:[['There ___ a pen on the desk.','is|are|have',0,'a pen 单数，用 is。'],
+['There ___ some apples in the basket.','is|are|has',1,'apples 复数，用 are。'],
+['There ___ a book and two pens on the desk.','is|are|be',0,'就近原则，靠近的是 a book，用 is。'],
+['___ there any milk in the glass?','Is|Are|Do',0,'milk 不可数，用 Is there。'],
+['There ___ any students in the classroom.','isn\u2019t|aren\u2019t|don\u2019t',1,'students 复数，否定用 aren\u2019t。'],
+['How many students ___ there in your class?','is|are|have',1,'students 复数，用 are。']]},
+
+{id:'wh',t:'⑨ 疑问词（提问必备）',tag:'问句开头',
+body:['<b>what</b> 什么　<b>who</b> 谁　<b>whose</b> 谁的　<b>where</b> 哪里　<b>when</b> 什么时候　<b>why</b> 为什么　<b>how</b> 怎样',
+'组合：<b>how old</b> 多大　<b>how many</b> + 可数名词复数　<b>how much</b> + 不可数名词 / 价钱　<b>what time</b> 几点　<b>what colour</b> 什么颜色　<b>what class</b> 哪个班',
+'<span class="ex">What\u2019s your name?<i>你叫什么名字？</i></span><span class="ex">Where are you from?<i>你来自哪里？</i></span>',
+'问时间：What time do you get up? 问数量：How many books do you have?',
+'回答要对应：问 Where 答地点，问 Who 答人，问 How many 答数字。'],
+qs:[['___ is your name? — My name is Tom.','What|Who|Where',0,'问名字用 What。'],
+['___ are you from? — I\u2019m from Xuzhou.','What|Where|When',1,'问地点用 Where。'],
+['___ is that boy? — He is my brother.','Who|What|Whose',0,'问人用 Who。'],
+['___ do you get up? — At six.','What time|How many|Whose',0,'问几点用 What time。'],
+['___ books do you have? — Ten.','How much|How many|How old',1,'books 可数，用 How many。'],
+['___ is your English teacher? — She is fine.','How|Who|Where',0,'问「怎么样」用 How。']]},
+
+{id:'prep',t:'⑩ 介词 in / on / at + 词性入门',tag:'时间与词性',
+body:['时间介词：<b>in</b> + 年、月、季节、一天的上午/下午/晚上：in 2024，in May，in winter，in the morning。',
+'<b>on</b> + 具体某天、星期、日期：on Monday，on May 1st，on Sunday morning。',
+'<b>at</b> + 具体时刻、中午、夜里：at six o\u2019clock，at noon，at night。',
+'<b>词性</b>就是「这个词是干什么的」：<br><b>名词</b>：人、物、事（book，teacher）<br><b>代词</b>：代替名词（I，he，it）<br><b>动词</b>：动作、状态（run，is）<br><b>形容词</b>：……的，修饰名词（beautiful）<br><b>副词</b>：……地，修饰动词（quickly）<br><b>介词</b>：表示时间位置（in，on，at）<br><b>连词</b>：连接（and，but，because）',
+'判断词性看它在句子里干什么：<span class="ex">He runs quickly.<i>he 代词，runs 动词，quickly 副词。</i></span>'],
+qs:[['I get up ___ six o\u2019clock.','in|on|at',2,'具体时刻用 at。'],
+['We have a party ___ Sunday.','in|on|at',1,'星期用 on。'],
+['It is hot ___ summer.','in|on|at',0,'季节用 in。'],
+['「quickly」是什么词性？','形容词|副词|名词',1,'修饰动词，是副词。'],
+['「beautiful」是什么词性？','形容词|副词|动词',0,'修饰名词，是形容词。'],
+['「because」是什么词性？','介词|连词|副词',1,'连接句子，是连词。']]}
+];
+
+/* ---------- 音标 ---------- */
+var PH=[
+{t:'元音 · 12 个单元音',l:[['iː','see'],['ɪ','sit'],['e','bed'],['æ','cat'],['ɑː','car'],['ɒ','dog'],['ɔː','door'],['ʊ','book'],['uː','food'],['ʌ','bus'],['ɜː','bird'],['ə','about']]},
+{t:'元音 · 8 个双元音',l:[['eɪ','day'],['aɪ','my'],['ɔɪ','boy'],['aʊ','now'],['əʊ','go'],['ɪə','ear'],['eə','pear'],['ʊə','tour']]},
+{t:'辅音 · 爆破音和摩擦音',l:[['p','pen'],['b','bag'],['t','ten'],['d','dog'],['k','cat'],['ɡ','go'],['f','five'],['v','very'],['θ','three'],['ð','this'],['s','six'],['z','zoo'],['ʃ','she'],['ʒ','usually'],['h','hat']]},
+{t:'辅音 · 鼻音 / 舌侧音 / 半元音',l:[['m','mum'],['n','nine'],['ŋ','sing'],['l','leg'],['r','red'],['j','yes'],['w','we']]},
+{t:'辅音 · 破擦音',l:[['tʃ','chair'],['dʒ','juice'],['tr','tree'],['dr','draw'],['ts','cats'],['dz','beds']]}
+];
+
+/* ---------- 存储 ---------- */
+var KEY='en7_v1',MEM=null,S={};
+var CANSTORE=(function(){try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return true}catch(e){return false}})();
+function dstr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function loadS(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return MEM}}
+function saveS(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){MEM=S}}
+S=loadS()||{};
+S.seen=S.seen||{};S.wrongQ=S.wrongQ||[];S.wrongW=S.wrongW||[];S.lessons=S.lessons||[];S.today=S.today||{};
+if(S.today.date!==dstr())S.today={date:dstr(),words:0,gram:0,prac:0};
+
+/* ---------- 工具 ---------- */
+var app=document.getElementById('app'),nav=document.getElementById('nav'),STATE={v:'home',a:null},WS=null,QZ=null;
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function speak(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.82;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function allWords(){var o=[];WG.forEach(function(g){g.l.forEach(function(w){o.push({en:w[0],zh:w[1],ipa:w[2]})})});return o}
+function allCount(){return allWords().length}
+function learnedCount(){var n=0;for(var k in S.seen){if(S.seen[k]>0)n++}return n}
+function view(name,arg){STATE.v=name;STATE.a=arg;render();window.scrollTo(0,0)}
+function hdr(title,back){
+ return '<header>'+(back?'<button class="back" onclick="'+back+'">'+IC.back+'</button>':'')+'<h1>'+title+'</h1></header>';
+}
+
+/* ---------- 渲染 ---------- */
+function render(){
+ var h='';
+ if(STATE.v==='home')h=homeHTML();
+ else if(STATE.v==='words')h=wordsHTML();
+ else if(STATE.v==='wordrun')h=wordRunHTML();
+ else if(STATE.v==='grammar')h=grammarHTML();
+ else if(STATE.v==='lesson')h=lessonHTML();
+ else if(STATE.v==='phon')h=phonHTML();
+ else if(STATE.v==='practice')h=practiceHTML();
+ else if(STATE.v==='quiz')h=quizHTML();
+ else if(STATE.v==='wrong')h=wrongHTML();
+ else h=homeHTML();
+ app.innerHTML=h;
+ var tabs=[['home','home','首页'],['words','book','单词'],['grammar','text','语法'],['phon','wave','音标'],['practice','pen','练习'],['wrong','undo','错题']];
+ nav.innerHTML=tabs.map(function(t){
+  var on=(t[0]===STATE.v||(t[0]==='words'&&STATE.v==='wordrun')||(t[0]==='grammar'&&STATE.v==='lesson')||(t[0]==='practice'&&STATE.v==='quiz'))?' on':'';
+  return '<button class="'+on.trim()+'" onclick="view(\''+t[0]+'\')">'+IC[t[1]]+'<span>'+t[2]+'</span></button>'
+ }).join('');
+}
+
+/* ---------- 首页 ---------- */
+function bar(l,v,m){var p=Math.round(v/m*100);return '<div class="brow"><span>'+l+'</span><div class="bar"><i style="width:'+p+'%"></i></div><span class="bv">'+v+'/'+m+'</span></div>'}
+function stat(v,l){return '<div class="st"><div class="num">'+v+'</div><div class="lb">'+l+'</div></div>'}
+function rowBtn(v,icon,title,sub){return '<button class="btn" onclick="view(\''+v+'\')">'+ic(icon)+'<span class="bt"><span class="b1">'+title+'</span><span class="b2">'+sub+'</span></span><span class="chev">'+IC.chev+'</span></button>'}
+function homeHTML(){
+ var t=S.today,w=Math.min(10,t.words),g=t.gram?1:0,p=Math.min(8,t.prac),done=w+g+p;
+ var learned=learnedCount(),bad=S.wrongQ.length+S.wrongW.length;
+ var h=hdr('英语补底')+'<main>';
+ h+='<div class="card hero"><div class="ht">今天 15 分钟</div><div class="hsub">先背词，再看语法，最后做题</div>'
+   +bar('单词',w,10)+bar('语法',g,1)+bar('练习',p,8)
+   +'<button class="btn pri" onclick="beginToday()">'+(done?'继续今天的学习':'开始今天的学习')+'</button></div>';
+ h+='<div class="card stats">'+stat(learned,'背过的词')+stat(S.lessons.length+'/'+LESSONS.length,'学过的语法')+stat(bad,'待巩固')+'</div>';
+ if(!CANSTORE)h+='<div class="card warn">'+ic('info')+'<span>这个浏览器不保存进度，建议用 Chrome 打开。</span></div>';
+ h+='<div class="card tip">'+ic('info')+'<span>别急着刷题。先把三到六年级的单词补回来：每天 10 个，20 天就有 200 个。词认识了，句子才看得懂。</span></div>';
+ h+=rowBtn('words','book','背单词',allCount()+' 个词 · 8 组 · 每个词带音标');
+ h+=rowBtn('grammar','text','学语法','10 课 · 从 this is 讲起');
+ h+=rowBtn('phon','wave','学音标','48 个音标 · 看词能读');
+ h+=rowBtn('practice','pen','做练习','选择 · 拼写 · 连词成句 · 翻译');
+ return h+'</main>';
+}
+function beginToday(){
+ var t=S.today;
+ if(t.words<10){startWords(-1);return}
+ if(!t.gram){view('grammar');return}
+ view('practice');
+}
+
+/* ---------- 单词 ---------- */
+function wordsHTML(){
+ var all=allCount();
+ var h=hdr('单词')+'<main>';
+ h+='<div class="card muted">一共 '+all+' 个词，从三年级排到初一。每次 10 个：先看英语和音标，想不起来就点卡片看中文。</div>';
+ h+='<button class="btn pri" onclick="startWords(-1)">'+IC.shuffle+'智能复习：先挑没背过的</button>';
+ WG.forEach(function(g,i){
+  var d=g.l.filter(function(w){return S.seen[w[0]]>0}).length;
+  h+='<button class="btn" onclick="startWords('+i+')"><span class="bt"><span class="b1">'+esc(g.n)+'</span><span class="b2">'+g.l.length+' 词'+(d?' · 已背 '+d:'')+'</span></span><span class="chev">'+IC.chev+'</span></button>';
+ });
+ return h+'</main>';
+}
+function startWords(gi){
+ var pool;
+ if(gi<0){
+  var all=allWords(),fresh=all.filter(function(w){return !S.seen[w.en]});
+  pool=(fresh.length>=10?shuffle(fresh):shuffle(all)).slice(0,10);
+ }else{
+  pool=shuffle(WG[gi].l.map(function(x){return {en:x[0],zh:x[1],ipa:x[2]}})).slice(0,10);
+ }
+ WS={list:pool,i:0,rev:false,known:0,gi:gi};
+ view('wordrun');
+}
+function wordRunHTML(){
+ if(!WS)return wordsHTML();
+ if(WS.i>=WS.list.length)return wordDoneHTML();
+ var w=WS.list[WS.i];
+ return hdr('背单词',"view('words')")+'<main>'
+ +'<div class="center" style="margin-bottom:10px"><span class="pill">'+(WS.i+1)+' / '+WS.list.length+'</span></div>'
+ +'<div class="card flash" onclick="flipW()">'
+   +'<div class="big">'+esc(w.en)+'</div>'
+   +'<div class="ipa">'+esc(w.ipa||'')+'</div>'
+   +(WS.rev?'<div class="zh">'+esc(w.zh)+'</div>':'<div class="hint">点一下看中文</div>')
+ +'</div>'
+ +'<button class="iconbtn" onclick="speak(\''+esc(w.en)+'\')">'+IC.sound+'</button>'
+ +(WS.rev
+   ?'<div class="row2"><button class="btn bad" onclick="markW(0)">还不认识</button><button class="btn ok" onclick="markW(1)">认识了</button></div>'
+   :'<button class="btn pri" onclick="flipW()">看中文</button>')
+ +'</main>';
+}
+function flipW(){if(WS&&WS.i<WS.list.length){WS.rev=true;render()}}
+function markW(ok){
+ if(!WS||WS.i>=WS.list.length)return;
+ var w=WS.list[WS.i];
+ if(ok){S.seen[w.en]=(S.seen[w.en]||0)+1;WS.known++;S.wrongW=S.wrongW.filter(function(x){return x.en!==w.en})}
+ else{S.seen[w.en]=0;addWrongW(w)}
+ S.today.words++;saveS();
+ WS.i++;WS.rev=false;render();
+}
+function addWrongW(w){for(var i=0;i<S.wrongW.length;i++){if(S.wrongW[i].en===w.en)return}S.wrongW.push({en:w.en,zh:w.zh,ipa:w.ipa})}
+function wordDoneHTML(){
+ return hdr('背单词')+'<main><div class="card center">'
+ +'<div class="num" style="font-size:30px">'+(WS?WS.known:0)+' / '+(WS?WS.list.length:0)+'</div>'
+ +'<div class="muted" style="margin:4px 0 16px">这一组认识的词</div>'
+ +'<button class="btn pri" onclick="startWords('+(WS?WS.gi:-1)+')">再来 10 个</button>'
+ +'<button class="btn ghost" onclick="view(\'words\')">回到单词列表</button>'
+ +'</div></main>';
+}
+
+/* ---------- 语法 ---------- */
+function grammarHTML(){
+ var h=hdr('语法')+'<main>';
+ h+='<div class="card muted">按顺序学，不要跳。第 1 课就讲最基础的「是」。每课 5 分钟，学完马上做题。</div>';
+ LESSONS.forEach(function(l,i){
+  var done=S.lessons.indexOf(l.id)>=0;
+  h+='<button class="btn" onclick="openLesson('+i+')"><span class="tnum">'+(i+1)+'</span>'
+   +'<span class="bt"><span class="b1">'+esc(l.t.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,''))+'</span>'
+   +'<span class="b2">'+esc(l.tag)+(done?' · <span class="done">已学</span>':'')+'</span></span></button>';
+ });
+ return h+'</main>';
+}
+function openLesson(i){view('lesson',i)}
+function lessonHTML(){
+ var l=LESSONS[STATE.a]||LESSONS[0];
+ var h=hdr('语法',"view('grammar')")+'<main>';
+ h+='<div class="card lesson">'
+  +'<div class="ht" style="margin-bottom:12px;font-size:19px">'+esc(l.t.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,''))+'</div>'
+  +l.body.map(function(p){return '<div class="para">'+p+'</div>'}).join('')
+  +'</div>';
+ h+='<button class="btn pri" onclick="startLessonQuiz(\''+l.id+'\')">做这一课的练习（'+l.qs.length+' 题）</button>';
+ if(STATE.a<LESSONS.length-1)h+='<button class="btn ghost" onclick="view(\'lesson\','+(STATE.a+1)+')">下一课</button>';
+ return h+'</main>';
+}
+function startLessonQuiz(id){
+ var L=null;
+ for(var i=0;i<LESSONS.length;i++){if(LESSONS[i].id===id)L=LESSONS[i]}
+ if(!L)return;
+ var list=L.qs.map(function(a){var o=a[1].split('|');return {kind:'choice',stem:a[0],opts:o,a:a[2],why:a[3]}});
+ quizStart(list,'练习 · '+L.t.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,''),function(){
+  if(S.lessons.indexOf(id)<0)S.lessons.push(id);
+  S.today.gram=1;saveS();
+ });
+}
+
+/* ---------- 音标 ---------- */
+function phonHTML(){
+ var h=hdr('音标')+'<main>';
+ h+='<div class="card"><div class="ht" style="font-size:19px">音标就是英语的拼音</div>'
+  +'<div class="muted" style="margin-top:6px">认了音标，看到生词就能自己读出来。英语一共 48 个音标：20 个元音、28 个辅音。'
+  +'音标写在 / / 里，比如 cat 是 /kæt/。点下面的音标听例子词。</div></div>';
+ PH.forEach(function(g){
+  h+='<div class="sec">'+esc(g.t)+'</div><div class="pgrid">';
+  g.l.forEach(function(p){
+   h+='<button class="pc" onclick="speak(\''+p[1]+'\')"><span class="s">/'+esc(p[0])+'/</span><span class="w">'+esc(p[1])+'</span></button>';
+  });
+  h+='</div>';
+ });
+ h+='<div class="sec">发音提示</div>';
+ h+='<div class="card tips">'
+  +'<p><b>/θ/ /ð/</b>　舌尖轻轻放在上下齿之间：three、this。汉语没有这两个音，别读成 s / z。</p>'
+  +'<p><b>/v/</b>　上牙咬住下唇出声：very。别读成 w。</p>'
+  +'<p><b>/æ/</b>　嘴张大像要笑：cat。别读成「凯特」。</p>'
+  +'<p><b>/ɪ/ 和 /iː/</b>　一短一长：sit 短，seat 长。</p>'
+  +'<p><b>/ˈ/</b>　重音记号，后面的音节读重一点：begin /bɪˈɡɪn/。</p>'
+  +'<p><b>词尾 -s</b>　清音后读 /s/（books），浊音后读 /z/（dogs），s/x/ch/sh 后读 /ɪz/（boxes）。</p>'
+  +'</div>';
+ h+='<button class="btn pri mid" onclick="drill(\'ipa2w\')">练习：看音标选单词</button>';
+ h+='<button class="btn mid" onclick="drill(\'w2ipa\')">练习：看单词选音标</button>';
+ return h+'</main>';
+}
+
+/* ---------- 练习 ---------- */
+function practiceHTML(){
+ var items=[
+  ['mix','混合 8 题（推荐）'],
+  ['en2zh','看英语选中文'],
+  ['zh2en','看中文选英语'],
+  ['spell','拼写单词'],
+  ['order','连词成句'],
+  ['trans','句子翻译'],
+  ['ipa2w','看音标选单词'],
+  ['w2ipa','看单词选音标']
+ ];
+ var h=hdr('练习')+'<main><div class="card muted">一次 8 题，选完立刻看答案和讲解。做错的题会自动进「错题」，第二天再重做一次。</div>';
+ items.forEach(function(it,i){
+  h+='<button class="btn'+(i===0?' pri':'')+'" onclick="drill(\''+it[0]+'\')"><span class="tnum">'+(i+1)+'</span><span class="bt"><span class="b1">'+it[1]+'</span></span></button>';
+ });
+ return h+'</main>';
+}
+function other(arr,key,self,n){
+ var out=[],used={},g=0;used[self]=1;
+ while(out.length<n&&g++<400){
+  var v=arr[Math.floor(Math.random()*arr.length)][key];
+  if(!used[v]){used[v]=1;out.push(v)}
+ }
+ return out;
+}
+function mkChoice(stem,correct,others,why){
+ var opts=shuffle([correct].concat(others));
+ return {kind:'choice',stem:stem,opts:opts,a:opts.indexOf(correct),why:why};
+}
+function makeQ(kind,n){
+ var all=allWords(),out=[];
+ if(kind==='ipa2w'){
+  var seenIpa={},uniq=[];
+  all.forEach(function(w){if(!seenIpa[w.ipa]){seenIpa[w.ipa]=1;uniq.push(w)}});
+  var ws=shuffle(uniq).slice(0,Math.min(n,uniq.length));
+  ws.forEach(function(w){
+   out.push(mkChoice('<span class="bigipa">'+esc(w.ipa)+'</span> 是哪个单词？',w.en,other(uniq,'en',w.en,3),w.ipa+' = '+w.en+' '+w.zh));
+  });
+  return out;
+ }
+ if(kind==='w2ipa'){
+  var seen2={},u2=[];
+  all.forEach(function(w){if(!seen2[w.ipa]){seen2[w.ipa]=1;u2.push(w)}});
+  shuffle(u2).slice(0,Math.min(n,u2.length)).forEach(function(w){
+   out.push(mkChoice('<b>'+esc(w.en)+'</b> 的音标是？',w.ipa,other(u2,'ipa',w.ipa,3),w.en+' '+w.ipa+' '+w.zh));
+  });
+  return out;
+ }
+ var words=shuffle(all).slice(0,n);
+ if(kind==='en2zh'){
+  words.forEach(function(w){out.push(mkChoice('<b>'+esc(w.en)+'</b> '+esc(w.ipa)+' 是什么意思？',w.zh,other(all,'zh',w.zh,3),w.en+' = '+w.zh))});
+ }else if(kind==='zh2en'){
+  words.forEach(function(w){out.push(mkChoice('「'+esc(w.zh)+'」用英语怎么说？',w.en,other(all,'en',w.en,3),w.en+' = '+w.zh))});
+ }else if(kind==='spell'){
+  words.forEach(function(w){
+   var hint=w.en.replace(/[A-Za-z]/g,function(c,i){return i===0?c:'_'});
+   out.push({kind:'type',stem:'写出英语：'+esc(w.zh),ans:w.en,hint:hint+'　'+w.ipa,why:w.en+' '+w.ipa+' = '+w.zh});
+  });
+ }else if(kind==='order'){
+  shuffle(SENT).slice(0,n).forEach(function(p){out.push(mkOrder(p))});
+ }else if(kind==='trans'){
+  shuffle(SENT).slice(0,n).forEach(function(p){
+   var others=other(SENT.map(function(x){return {e:x[0]}}),'e',p[0],3);
+   out.push(mkChoice('「'+esc(p[1])+'」的英语是？',p[0],others,p[0]+' = '+p[1]));
+  });
+ }
+ return out;
+}
+function mkOrder(p){
+ var answer=p[0].split(' '),tokens=shuffle(answer),g=0;
+ while(tokens.join(' ')===answer.join(' ')&&g++<30)tokens=shuffle(answer);
+ return {kind:'order',stem:'连词成句：'+esc(p[1]),tokens:tokens,answer:answer,why:p[0]};
+}
+function mixQ(n){
+ var pool=[].concat(makeQ('en2zh',2),makeQ('zh2en',1),makeQ('spell',1),makeQ('order',1),makeQ('trans',1),makeQ('ipa2w',1));
+ var learn=LESSONS[Math.floor(Math.random()*LESSONS.length)];
+ var lq=learn.qs.map(function(x){var o=x[1].split('|');return {kind:'choice',stem:x[0],opts:o,a:x[2],why:x[3]}});
+ pool=pool.concat(shuffle(lq).slice(0,2));
+ return shuffle(pool).slice(0,n);
+}
+function drill(kind){
+ var list=kind==='mix'?mixQ(8):makeQ(kind,8);
+ quizStart(list,kind==='mix'?'混合练习':'练习',function(){});
+}
+
+/* ---------- 答题 ---------- */
+function quizStart(list,title,onDone){
+ if(!list||!list.length){alert('题库准备中');return}
+ QZ={list:list,i:0,right:0,wrong:0,title:title,onDone:onDone,answered:false,chosen:-1,sel:[],typed:'',lastOK:false};
+ view('quiz');
+}
+function quizHTML(){
+ if(!QZ)return practiceHTML();
+ if(QZ.i>=QZ.list.length)return quizDoneHTML();
+ var q=QZ.list[QZ.i],i=QZ.i,body='';
+ if(q.kind==='choice'){
+  body=q.opts.map(function(o,j){
+   var cls='opt';
+   if(QZ.answered){if(j===q.a)cls+=' ok';else if(j===QZ.chosen)cls+=' no'}
+   return '<button class="'+cls+'" onclick="ansChoice('+j+')">'+esc(o)+'</button>'
+  }).join('');
+ }else if(q.kind==='type'){
+  body='<input id="tin" class="inp" autocomplete="off" autocapitalize="off" spellcheck="false" '+(QZ.answered?'disabled value="'+esc(QZ.typed)+'"':'')+' placeholder="在这里写出英语">'
+  +(q.hint?'<div class="ph">提示：'+esc(q.hint)+'</div>':'')
+  +(QZ.answered?'':'<button class="btn pri" style="margin-top:12px" onclick="checkTypeQ()">提交</button>');
+ }else if(q.kind==='order'){
+  var chosen=QZ.sel.map(function(j){return q.tokens[j]}),rest='';
+  q.tokens.forEach(function(t,j){if(QZ.sel.indexOf(j)<0)rest+='<button class="chip" onclick="pickTok('+j+')">'+esc(t)+'</button>'});
+  body='<div class="slot">'+(chosen.length?chosen.map(function(t){return '<span class="chip">'+esc(t)+'</span>'}).join(''):'<span class="ph">按顺序点下面的词</span>')+'</div>'
+  +'<div class="chips">'+rest+'</div>'
+  +(QZ.answered?'':'<div class="row2"><button class="btn ghost" onclick="clearTok()">清空</button><button class="btn pri" onclick="checkOrderQ()">检查</button></div>');
+ }
+ var fb='';
+ if(QZ.answered){
+  var ok=(q.kind==='choice')?(QZ.chosen===q.a):QZ.lastOK;
+  fb='<div class="fb '+(ok?'good':'bad')+'">'+ic(ok?'check':'x')+'<div><div>'+(ok?'答对了':'再记一次')+'</div>'
+   +(q.kind==='choice'?'':'<div style="margin-top:2px">正确答案：<b>'+esc(ansText(q))+'</b></div>')
+   +'<div class="why">'+esc(q.why)+'</div></div></div>'
+   +'<button class="btn pri" onclick="nextQ()">下一题</button>';
+ }
+ return hdr(QZ.title,'quizExit()')+'<main>'
+ +'<div class="center" style="margin-bottom:10px"><span class="pill">'+(i+1)+' / '+QZ.list.length+' · 对 '+QZ.right+'</span></div>'
+ +'<div class="card"><div class="stem">'+q.stem+'</div>'+body+'</div>'+fb+'</main>';
+}
+function ansText(q){
+ if(q.kind==='choice')return q.opts[q.a];
+ if(q.kind==='type')return q.ans;
+ if(q.kind==='order')return q.answer.join(' ');
+ return '';
+}
+function record(ok){
+ if(ok)QZ.right++;else{QZ.wrong++;addWrongQ(QZ.list[QZ.i])}
+ S.today.prac++;saveS();
+}
+function ansChoice(j){if(QZ.answered)return;QZ.chosen=j;QZ.answered=true;record(j===QZ.list[QZ.i].a);render()}
+function norm(s){return String(s).toLowerCase().replace(/\s+/g,' ').trim().replace(/[.。!！?？]/g,'')}
+function checkTypeQ(){
+ var v=document.getElementById('tin').value;
+ if(!v.trim())return;
+ QZ.typed=v.trim();
+ var ok=norm(v)===norm(QZ.list[QZ.i].ans);
+ QZ.answered=true;QZ.lastOK=ok;record(ok);render();
+}
+function pickTok(j){if(QZ.answered)return;QZ.sel.push(j);render()}
+function clearTok(){if(QZ.answered)return;QZ.sel=[];render()}
+function checkOrderQ(){
+ var q=QZ.list[QZ.i],got=QZ.sel.map(function(j){return q.tokens[j]}).join(' ');
+ var ok=norm(got)===norm(q.answer.join(' '));
+ QZ.answered=true;QZ.lastOK=ok;record(ok);render();
+}
+function nextQ(){QZ.i++;QZ.answered=false;QZ.chosen=-1;QZ.sel=[];QZ.typed='';QZ.lastOK=false;render();window.scrollTo(0,0)}
+function quizExit(){if(QZ&&QZ.onDone)QZ.onDone();view('practice')}
+function quizDoneHTML(){
+ if(QZ&&QZ.onDone)QZ.onDone();
+ var n=QZ.list.length,r=QZ.right;
+ var msg=r===n?'全对，今天这一组很稳。':(r>=n*0.7?'不错，错的题已经进错题本。':'错的有点多，别急，回错题本再看一遍。');
+ return hdr('完成')+'<main><div class="card center">'
+ +'<div class="num" style="font-size:32px">'+r+' / '+n+'</div>'
+ +'<div class="muted" style="margin:6px 0 18px">'+msg+'</div>'
+ +'<button class="btn pri" onclick="view(\'wrong\')">看错题本</button>'
+ +'<button class="btn ghost" onclick="quizExit()">回练习</button>'
+ +'</div></main>';
+}
+
+/* ---------- 错题 ---------- */
+function addWrongQ(q){
+ for(var i=0;i<S.wrongQ.length;i++){if(S.wrongQ[i].stem===q.stem)return}
+ S.wrongQ.push(JSON.parse(JSON.stringify(q)));
+}
+function wrongHTML(){
+ var qs=S.wrongQ,ws=S.wrongW,body='';
+ if(!qs.length&&!ws.length){
+  body='<div class="card center"><div class="muted">还没有错题。去做几道练习，错题会自动收进来。</div></div>';
+ }else{
+  if(ws.length){
+   body+='<div class="card"><div style="font-weight:650;margin-bottom:2px">单词 · '+ws.length+' 个</div>'
+   +ws.map(function(w){return '<div class="wrow"><div><div class="e">'+esc(w.en)+'</div><div class="z">'+esc(w.ipa||'')+'　'+esc(w.zh)+'</div></div><button class="chip" onclick="speak(\''+esc(w.en)+'\')">'+IC.sound+'</button></div>'}).join('')
+   +'<button class="btn pri" style="margin-top:12px" onclick="redoWords()">重背这些词</button></div>';
+  }
+  if(qs.length){
+   body+='<div class="card"><div style="font-weight:650;margin-bottom:2px">题目 · '+qs.length+' 道</div>'
+   +qs.map(function(q){return '<div class="wrow"><div><div class="e" style="font-weight:500;font-size:15px">'+q.stem+'</div><div class="z">正确答案：'+esc(ansText(q))+'</div></div></div>'}).join('')
+   +'<button class="btn pri" style="margin-top:12px" onclick="redoQs()">重做这些题</button></div>';
+  }
+ }
+ var h=hdr('错题本')+'<main>'+body;
+ if(qs.length||ws.length)h+='<button class="btn ghost" onclick="clearWrong()">清空错题本</button>';
+ h+='<div class="card muted" style="font-size:13px">今天做错的题，明天早上再看一遍。连续 3 天都对，这个知识点就算过关了。</div>';
+ return h+'</main>';
+}
+function redoWords(){
+ var list=shuffle(S.wrongW).slice(0,10).map(function(w){return {en:w.en,zh:w.zh,ipa:w.ipa}});
+ WS={list:list,i:0,rev:false,known:0,gi:-1};
+ view('wordrun');
+}
+function redoQs(){quizStart(shuffle(S.wrongQ).slice(0,10),'重做错题',function(){})}
+var SHEETOK=null;
+function openSheet(title,text,okText,onOk){
+ SHEETOK=onOk||null;
+ document.getElementById('sheet').innerHTML='<div class="grab"></div><h3>'+esc(title)+'</h3><p>'+esc(text)+'</p>'
+  +'<div class="row2"><button class="btn" onclick="closeSheet()">取消</button>'
+  +'<button class="btn bad" onclick="sheetOk()">'+esc(okText||'确定')+'</button></div>';
+ document.getElementById('modal').classList.add('on');
+}
+function closeSheet(){document.getElementById('modal').classList.remove('on');SHEETOK=null}
+function sheetOk(){var f=SHEETOK;closeSheet();if(f)f()}
+function clearWrong(){
+ openSheet('清空错题本','错题和标记的单词会被删除，学习进度不受影响。','清空',function(){
+   S.wrongQ=[];S.wrongW=[];saveS();render();
+ });
+}
+
+/* 轻触反馈：手机上点按钮时给一点震动 */
+document.addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('button'):null;
+ if(t&&navigator.vibrate){try{navigator.vibrate(6)}catch(_){}}
+},true);
+
+render();
+</script>
+</body>
+</html>
